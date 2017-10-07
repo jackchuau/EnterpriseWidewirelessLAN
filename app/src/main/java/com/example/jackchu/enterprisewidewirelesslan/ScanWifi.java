@@ -1,27 +1,23 @@
 package com.example.jackchu.enterprisewidewirelesslan;
 
-import android.app.AlertDialog;
+import android.Manifest;
 import android.content.Context;
-import android.net.ConnectivityManager;
+import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import static android.R.id.list;
 
 /**
  * Created by jackchu on 4/10/2017.
@@ -44,13 +40,27 @@ public class ScanWifi extends AppCompatActivity {
 
     }
 
+
+
     public void start() {
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-//        Toast.makeText(getApplicationContext(), "all good 000", Toast.LENGTH_LONG).show();
         if (!wifiManager.isWifiEnabled() && wifiManager.getWifiState() != wifiManager.WIFI_STATE_ENABLING) {
             wifiManager.setWifiEnabled(true);
         }
+
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+//            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+//
+//        }else{
+//            list = wifiManager.getScanResults();
+//            //do something, permission was previously granted; or legacy device
+//        }
+
         list = wifiManager.getScanResults();
+        String size = Integer.toString(list.size());
+        Toast.makeText(getApplicationContext(), "all good 000" + "size is " + size, Toast.LENGTH_LONG).show();
+
         sort(list);
         final ListView listView = (ListView) findViewById(R.id.listView);
         if (list == null) {
