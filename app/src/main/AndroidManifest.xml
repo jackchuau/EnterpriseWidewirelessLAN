@@ -18,8 +18,8 @@
         </activity>
 
         <activity android:name=".ScanWifi"></activity>
-        <activity android:name=".NetworkDetails"></activity>
         <activity android:name=".L4connectivity"></activity>
+        <activity android:name=".L2handoff"></activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>

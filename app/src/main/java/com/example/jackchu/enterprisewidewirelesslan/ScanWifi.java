@@ -28,14 +28,19 @@ public class ScanWifi extends AppCompatActivity {
     WifiManager wifiManager;
     Context context;
     List<ScanResult> list;
-    int AP_counts = 0;
+    int AP_counts;
+    String network_details = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         start();
-        count_AP(list);
-        Toast.makeText(getApplicationContext(), Integer.toString(AP_counts), Toast.LENGTH_LONG).show();
+        AP_counts = count_AP(list);
+        network_details = get_details();
+        TextView data = (TextView) findViewById(R.id.scan_wifi_data);
+        String pre_data = data.getText().toString();
+        data.setText(pre_data+"\ndensity: "+AP_counts+"\n"+network_details);
+//        Toast.makeText(getApplicationContext(), Integer.toString(AP_counts), Toast.LENGTH_LONG).show();
 
 
     }
@@ -47,7 +52,7 @@ public class ScanWifi extends AppCompatActivity {
         if (!wifiManager.isWifiEnabled() && wifiManager.getWifiState() != wifiManager.WIFI_STATE_ENABLING) {
             wifiManager.setWifiEnabled(true);
         }
-
+        list = wifiManager.getScanResults();
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
 //            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
 //            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
@@ -57,38 +62,38 @@ public class ScanWifi extends AppCompatActivity {
 //            //do something, permission was previously granted; or legacy device
 //        }
 
-        list = wifiManager.getScanResults();
-        String size = Integer.toString(list.size());
-        Toast.makeText(getApplicationContext(), "all good 000" + "size is " + size, Toast.LENGTH_LONG).show();
+//        String size = Integer.toString(list.size());
+//        Toast.makeText(getApplicationContext(), "all good 000" + "size is " + size, Toast.LENGTH_LONG).show();
 
-        sort(list);
-        final ListView listView = (ListView) findViewById(R.id.listView);
-        if (list == null) {
-            Toast.makeText(context, "wifi closed！", Toast.LENGTH_LONG).show();
-        } else {
-            listView.setAdapter(new MyAdapter(this, list));
-        }
+//        sort(list);
+//        final ListView listView = (ListView) findViewById(R.id.listView);
+//        if (list == null) {
+//            Toast.makeText(context, "wifi closed！", Toast.LENGTH_LONG).show();
+//        } else {
+//            listView.setAdapter(new MyAdapter(this, list));
+//        }
     }
 
 
-    private void count_AP(List<ScanResult> list) {
+    private Integer count_AP(List<ScanResult> list) {
+        int counts = 0;
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).SSID.equals("uniwide"))
-                AP_counts += 1;
+                counts += 1;
         }
+        return counts;
     }
 
-    private void sort(List<ScanResult> list) {
-        for (int i = 0; i < list.size(); i++)
-            for (int j = 0; j < list.size(); j++) {
-                if (list.get(i).level < list.get(j).level) {
-                    ScanResult temp = null;
-                    temp = list.get(i);
-                    list.set(i, list.get(j));
-                    list.set(j, temp);
-                }
-            }
+
+    private String get_details() {
+        wifiManager =  (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        String frequency = Double.toString(wifiManager.getConnectionInfo().getFrequency() * 0.001); // convert MHz to GHz
+        String speed = Integer.toString(wifiManager.getConnectionInfo().getLinkSpeed());  // Mbps
+        Toast.makeText(getApplicationContext(), "network details", Toast.LENGTH_LONG).show();
+        return "frequency: "+frequency+"\nspeed: "+speed;
     }
+
+
 
     public class MyAdapter extends BaseAdapter {
 
