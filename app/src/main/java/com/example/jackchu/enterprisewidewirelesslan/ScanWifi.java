@@ -53,25 +53,6 @@ public class ScanWifi extends AppCompatActivity {
             wifiManager.setWifiEnabled(true);
         }
         list = wifiManager.getScanResults();
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-//            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
-//            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-//
-//        }else{
-//            list = wifiManager.getScanResults();
-//            //do something, permission was previously granted; or legacy device
-//        }
-
-//        String size = Integer.toString(list.size());
-//        Toast.makeText(getApplicationContext(), "all good 000" + "size is " + size, Toast.LENGTH_LONG).show();
-
-//        sort(list);
-//        final ListView listView = (ListView) findViewById(R.id.listView);
-//        if (list == null) {
-//            Toast.makeText(context, "wifi closed！", Toast.LENGTH_LONG).show();
-//        } else {
-//            listView.setAdapter(new MyAdapter(this, list));
-//        }
     }
 
 
@@ -94,50 +75,6 @@ public class ScanWifi extends AppCompatActivity {
     }
 
 
-
-    public class MyAdapter extends BaseAdapter {
-
-        LayoutInflater inflater;
-        List<ScanResult> list;
-
-        public MyAdapter(Context context, List<ScanResult> list) {
-            // TODO Auto-generated constructor stub
-            this.inflater = LayoutInflater.from(context);
-            this.list = list;
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            View view = null;
-            view = inflater.inflate(R.layout.wifiviewlist, null);
-            ScanResult scanResult = list.get(position);
-            TextView textView = (TextView) view.findViewById(R.id.textView);
-            textView.setText(scanResult.SSID);
-            TextView signalStrenth = (TextView) view.findViewById(R.id.signal_strenth);
-            signalStrenth.setText(String.valueOf(Math.abs(scanResult.level)));
-
-            return view;
-        }
-    }
 
 
 }
